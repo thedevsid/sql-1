@@ -1,0 +1,66 @@
+CREATE TABLE product (
+  product_id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  category VARCHAR(255) NOT NULL,
+  PRIMARY KEY (product_id)
+);
+
+CREATE TABLE region (
+  region_id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  PRIMARY KEY (region_id)
+);
+
+CREATE TABLE time_period (
+  time_period_id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  PRIMARY KEY (time_period_id)
+);
+
+CREATE TABLE customer (
+  customer_id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  age INT NOT NULL,
+  loyalty_status VARCHAR(255) NOT NULL,
+  PRIMARY KEY (customer_id)
+);
+
+CREATE TABLE purchase (
+  purchase_id INT NOT NULL AUTO_INCREMENT,
+  customer_id INT NOT NULL,
+  time_period_id INT NOT NULL,
+  total_amount DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (purchase_id),
+  FOREIGN KEY (customer_id) REFERENCES customer (customer_id),
+  FOREIGN KEY (time_period_id) REFERENCES time_period (time_period_id)
+);
+
+CREATE TABLE purchase_product (
+  purchase_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL,
+  PRIMARY KEY (purchase_id, product_id),
+  FOREIGN KEY (purchase_id) REFERENCES purchase (purchase_id),
+  FOREIGN KEY (product_id) REFERENCES product (product_id)
+);
+
+CREATE TABLE product_region (
+  product_id INT NOT NULL,
+  region_id INT NOT NULL,
+  PRIMARY KEY (product_id, region_id),
+  FOREIGN KEY (product_id) REFERENCES product (product_id),
+  FOREIGN KEY (region_id) REFERENCES region (region_id)
+);
+
+CREATE TABLE inventory (
+  inventory_id INT NOT NULL AUTO_INCREMENT,
+  product_id INT NOT NULL,
+  stock_level INT NOT NULL,
+  PRIMARY KEY (inventory_id),
+  FOREIGN KEY (product_id) REFERENCES product (product_id)
+);
